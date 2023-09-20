@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/CarlosEduardoAD/jobbo-api/internal/api/framework/routes"
+	"github.com/CarlosEduardoAD/jobbo-api/internal/api/app/routes"
 	"github.com/labstack/echo"
 )
 

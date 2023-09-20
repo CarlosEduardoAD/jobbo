@@ -5,6 +5,7 @@ go 1.21.1
 require github.com/labstack/echo v3.3.10+incompatible
 
 require (
+	github.com/confluentinc/confluent-kafka-go v1.9.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gtuk/discordwebhook v1.1.0 // indirect
 	github.com/labstack/echo/v4 v4.11.1 // indirect

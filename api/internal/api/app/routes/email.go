@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 
+	email_service "github.com/CarlosEduardoAD/jobbo-api/internal/api/app/services"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/email"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
 	"github.com/labstack/echo"
@@ -36,7 +37,7 @@ func sendEmail(c echo.Context) error {
 
 	emailToBeDelivered := email.NewEmail(e.From, e.To, e.Subject, e.Body)
 
-	err, _ = email.DeliverEmail(dialer, emailToBeDelivered)
+	err, _ = email_service.DeliverEmail(dialer, emailToBeDelivered)
 
 	if err != nil {
 		c.Error(err)
