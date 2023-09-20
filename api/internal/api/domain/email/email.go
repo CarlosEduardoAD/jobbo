@@ -3,7 +3,7 @@ package email
 import (
 	"errors"
 
-	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/services"
+	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/services/email"
 	"gopkg.in/gomail.v2"
 )
 
