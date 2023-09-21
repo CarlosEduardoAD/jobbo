@@ -5,6 +5,7 @@ import (
 
 	email_service "github.com/CarlosEduardoAD/jobbo-api/internal/api/app/services"
 	email "github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/email"
+	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/smtp"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
 	"github.com/stretchr/testify/assert"
 )
@@ -36,8 +37,9 @@ func TestEmailCreation(t *testing.T) {
 
 func TestEmailDeliver(t *testing.T) {
 	dialer := utils.ConnectSMTP("smtp.gmail.com", 587, "karl.devcontato@gmail.com", "ehuf hvxx funu frov")
-	emailToBeDelivered := email.NewEmail("karl.devcontato@gmail.com", "karl.devcontato@gmail.com", "Test", "Email body")
-	err, sucess := email_service.DeliverEmail(dialer, emailToBeDelivered)
+	emailToBeDelivered := utils.ConvertToMailMessage(email.NewEmail("karl.devcontato@gmail.com", "karl.devcontato@gmail.com", "Test", "Email body"))
+	emailRepository := email_repo.NewEmailService(dialer, emailToBeDelivered)
+	err, sucess := email_service.DeliverEmail(emailRepository)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, true, sucess)
 }

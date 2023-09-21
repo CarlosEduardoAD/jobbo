@@ -5,6 +5,7 @@ import (
 
 	email_service "github.com/CarlosEduardoAD/jobbo-api/internal/api/app/services"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/email"
+	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/smtp"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
 	"github.com/labstack/echo"
 )
@@ -35,9 +36,11 @@ func sendEmail(c echo.Context) error {
 		return err
 	}
 
-	emailToBeDelivered := email.NewEmail(e.From, e.To, e.Subject, e.Body)
+	emailToBeDelivered := utils.ConvertToMailMessage(email.NewEmail(e.From, e.To, e.Subject, e.Body))
 
-	err, _ = email_service.DeliverEmail(dialer, emailToBeDelivered)
+	emailRepo := email_repo.NewEmailService(dialer, emailToBeDelivered)
+
+	err, _ = email_service.DeliverEmail(emailRepo)
 
 	if err != nil {
 		c.Error(err)
