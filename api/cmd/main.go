@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"os"
 	"sync"
 
 	email_handler "github.com/CarlosEduardoAD/jobbo-api/internal/api/app/handlers"
@@ -11,22 +12,32 @@ import (
 	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/smtp"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
 	kafkaLib "github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
 	"github.com/labstack/gommon/log"
 )
 
 func main() {
+	var err error
+	err = godotenv.Load(".env")
+
+	smtpServer := os.Getenv("GMAIL_SMTP")
+	smtpUser := os.Getenv("GMAIL_USER")
+	smtpPass := os.Getenv("GMAIL_PASS")
+
 	var wg sync.WaitGroup
 	var msgChan = make(chan *kafkaLib.Message)
-	dialer := utils.ConnectSMTP("smtp.gmail.com", 587, "karl.devcontato@gmail.com", "ehuf hvxx funu frov")
+	dialer := utils.ConnectSMTP(smtpServer, 587, smtpUser, smtpPass)
+
+	e := echo.New()
+	routes.EmailRoutes(e)
 
 	config := &kafkaLib.ConfigMap{
-		"bootstrap.servers": "localhost:9092", // Substitua pelo(s) endereço(s) do(s) broker(s) Kafka.
+		"bootstrap.servers": "localhost:9092", 
 		"group.id":          "goalfy-mail",
-		"auto.offset.reset": "latest", // Pode ser "earliest" ou "latest" dependendo do comportamento desejado.
+		"auto.offset.reset": "latest", 
 	}
 
-	// Crie um consumidor Kafka
 	consumer, err := kafkaLib.NewConsumer(config)
 	if err != nil {
 		log.Error("Erro ao criar o consumidor: %v\n", err)
@@ -35,6 +46,7 @@ func main() {
 
 	wg.Add(1)
 	go kafka.StartKafkaConsumer(&wg, consumer, "goalfy-mail", msgChan)
+	go e.Logger.Fatal(e.Start(":9292"))
 
 	for msg := range msgChan {
 		var err error
@@ -66,10 +78,6 @@ func main() {
 		}
 
 	}
-
-	e := echo.New()
-	routes.EmailRoutes(e)
-	e.Logger.Fatal(e.Start(":9292"))
 
 	wg.Wait()
 }

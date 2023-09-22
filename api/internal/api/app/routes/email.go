@@ -10,6 +10,11 @@ import (
 	"github.com/labstack/echo"
 )
 
+// EmailRoutes creates a group route for the route email.
+//
+// router: The router instance to attach the group route to.
+//
+// Returns the created group route.
 func EmailRoutes(router *echo.Echo) *echo.Group {
 	// I want to create a group route for the route email
 	emailGroup := router.Group("/email")
@@ -18,6 +23,10 @@ func EmailRoutes(router *echo.Echo) *echo.Group {
 	return emailGroup
 }
 
+// sendEmail sends an email using the provided email information.
+//
+// The function takes a `c` of type `echo.Context` as a parameter.
+// It returns an `error` if any error occurs during the process.
 func sendEmail(c echo.Context) error {
 	var err error
 

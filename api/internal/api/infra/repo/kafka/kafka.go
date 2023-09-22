@@ -10,6 +10,15 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
+// StartKafkaConsumer starts a Kafka consumer.
+//
+// It takes the following parameters:
+//   - wg: a pointer to a sync.WaitGroup object
+//   - consumer: a pointer to a kafka.Consumer object
+//   - topic: a string representing the Kafka topic
+//   - eventsChan: a channel of type *kafka.Message
+//
+// It does not return any value.
 func StartKafkaConsumer(wg *sync.WaitGroup, consumer *kafka.Consumer, topic string, eventsChan chan *kafka.Message) {
 
 	defer consumer.Close()
