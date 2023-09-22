@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	email_service "github.com/CarlosEduardoAD/jobbo-api/internal/api/app/services"
+	email_handler "github.com/CarlosEduardoAD/jobbo-api/internal/api/app/handlers"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/email"
 	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/smtp"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
@@ -37,10 +37,10 @@ func sendEmail(c echo.Context) error {
 	}
 
 	emailToBeDelivered := utils.ConvertToMailMessage(email.NewEmail(e.From, e.To, e.Subject, e.Body))
+	emailRepo := email_repo.NewEmailService(dialer)
+	email_handler := email_handler.NewEmailHandler(emailRepo)
 
-	emailRepo := email_repo.NewEmailService(dialer, emailToBeDelivered)
-
-	err, _ = email_service.DeliverEmail(emailRepo)
+	err, _ = email_handler.DeliverEmail(emailToBeDelivered)
 
 	if err != nil {
 		c.Error(err)

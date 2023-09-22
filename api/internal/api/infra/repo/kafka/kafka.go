@@ -10,7 +10,8 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-func StartKafkaConsumer(wg *sync.WaitGroup, consumer *kafka.Consumer, topic string) {
+func StartKafkaConsumer(wg *sync.WaitGroup, consumer *kafka.Consumer, topic string, eventsChan chan *kafka.Message) {
+
 	defer consumer.Close()
 
 	err := consumer.SubscribeTopics([]string{topic}, nil)
@@ -27,17 +28,9 @@ func StartKafkaConsumer(wg *sync.WaitGroup, consumer *kafka.Consumer, topic stri
 	log.Info("repository: kafka consumer connected sucessfully")
 	run := true
 	for run {
-		select {
-		case ev := <-consumer.Events():
-			switch e := ev.(type) {
-			case *kafka.Message:
-				fmt.Printf("Mensagem recebida em tópico %s:\n%s\n", e.TopicPartition, string(e.Value))
-			case kafka.Error:
-				fmt.Printf("Erro no consumidor: %v\n", e)
-			}
-		case <-sigchan:
-			fmt.Println("Recebida interrupção do sistema. Fechando o consumidor...")
-			run = false
+		msg, err := consumer.ReadMessage(-1)
+		if err == nil {
+			eventsChan <- msg
 		}
 	}
 }

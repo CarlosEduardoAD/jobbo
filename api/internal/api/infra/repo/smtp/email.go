@@ -9,19 +9,17 @@ type EmailActions interface {
 }
 
 type EmailRepository struct {
-	Server  *gomail.Dialer // dependency inversion
-	Message *gomail.Message
+	Server *gomail.Dialer // dependency inversion
 }
 
-func NewEmailService(server *gomail.Dialer, message *gomail.Message) *EmailRepository {
+func NewEmailService(server *gomail.Dialer) *EmailRepository {
 	return &EmailRepository{
-		Server:  server,
-		Message: message,
+		Server: server,
 	}
 }
 
-func (r *EmailRepository) DeliverEmail() error {
-	err := r.Server.DialAndSend(r.Message)
+func (r *EmailRepository) DeliverEmail(message *gomail.Message) error {
+	err := r.Server.DialAndSend(message)
 
 	if err != nil {
 		return err
