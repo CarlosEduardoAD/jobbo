@@ -14,9 +14,6 @@ import (
 	kafkaLib "github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
-
-	_ "github.com/CarlosEduardoAD/jobbo-api/docs"
-	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 // @title Swagger Example API
@@ -48,8 +45,7 @@ func main() {
 	e := echo.New()
 	routes.EmailRoutes(e)
 	routes.ServerRoutes(e)
-
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	routes.MessageRoutes(e)
 
 	config := &kafkaLib.ConfigMap{
 		"bootstrap.servers": "localhost:9092",

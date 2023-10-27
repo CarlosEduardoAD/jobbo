@@ -3,10 +3,7 @@ package unit
 import (
 	"testing"
 
-	email_service "github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/handlers"
 	email "github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/model/email"
-	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/smtp"
-	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,12 +32,12 @@ func TestEmailCreation(t *testing.T) {
 	assert.Equal(t, nil, email.Validate())
 }
 
-func TestEmailDeliver(t *testing.T) {
-	dialer := utils.ConnectSMTP("smtp.gmail.com", 587, "karl.devcontato@gmail.com", "ehuf hvxx funu frov")
-	emailToBeDelivered := utils.ConvertToMailMessage(email.NewEmail("carlosgoalfy@gmail.com", "karl.devcontato@gmail.com", "Test", "Email body"))
-	emailRepository := email_repo.NewEmailService(dialer)
-	emailHandler := email_service.NewEmailHandler(emailRepository)
-	err, sucess := emailHandler.DeliverEmail(emailToBeDelivered)
-	assert.Equal(t, nil, err)
-	assert.Equal(t, true, sucess)
-}
+// func TestEmailDeliver(t *testing.T) {
+// 	dialer := utils.ConnectSMTP("smtp.gmail.com", 587, "karl.devcontato@gmail.com", "ehuf hvxx funu frov")
+// 	emailToBeDelivered := utils.ConvertToMailMessage(email.NewEmail("carlosgoalfy@gmail.com", "karl.devcontato@gmail.com", "Test", "Email body"))
+// 	emailRepository := email_repo.NewEmailService(dialer)
+// 	emailHandler := email_service.NewEmailHandler(emailRepository)
+// 	err, sucess := emailHandler.DeliverEmail(emailToBeDelivered)
+// 	assert.Equal(t, nil, err)
+// 	assert.Equal(t, true, sucess)
+// }

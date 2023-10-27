@@ -36,6 +36,8 @@ func (serve *ServerRepository) Create(s *server.Server) error {
 	return nil
 }
 
+// receber o jwt e extrair o orgId.
+
 func (serve *ServerRepository) Find(id string) (*server.Server, error) {
 	var serverDTO server.Server
 	context := serve.db.First(&serverDTO, "id = ?", id)
