@@ -5,21 +5,37 @@ import (
 	"os"
 	"sync"
 
-	email_handler "github.com/CarlosEduardoAD/jobbo-api/internal/api/app/handlers"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/app/routes"
-	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/email"
+	email_handler "github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/handlers"
+	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/model/email"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/kafka"
 	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/smtp"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
 	kafkaLib "github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/joho/godotenv"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+
+	_ "github.com/CarlosEduardoAD/jobbo-api/docs"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample server Petstore server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host petstore.swagger.io
+// @BasePath /v2
 func main() {
 	var err error
-	err = godotenv.Load(".env")
+	// err = godotenv.Load(".env")
 
 	smtpServer := os.Getenv("GMAIL_SMTP")
 	smtpUser := os.Getenv("GMAIL_USER")
@@ -31,11 +47,14 @@ func main() {
 
 	e := echo.New()
 	routes.EmailRoutes(e)
+	routes.ServerRoutes(e)
+
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	config := &kafkaLib.ConfigMap{
-		"bootstrap.servers": "localhost:9092", 
+		"bootstrap.servers": "localhost:9092",
 		"group.id":          "goalfy-mail",
-		"auto.offset.reset": "latest", 
+		"auto.offset.reset": "latest",
 	}
 
 	consumer, err := kafkaLib.NewConsumer(config)

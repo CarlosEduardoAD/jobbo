@@ -3,11 +3,11 @@ package routes
 import (
 	"net/http"
 
-	email_handler "github.com/CarlosEduardoAD/jobbo-api/internal/api/app/handlers"
-	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/email"
+	email_handler "github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/handlers"
+	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/model/email"
 	email_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/smtp"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // EmailRoutes creates a group route for the route email.
@@ -23,8 +23,6 @@ func EmailRoutes(router *echo.Echo) *echo.Group {
 	return emailGroup
 }
 
-// sendEmail sends an email using the provided email information.
-//
 // The function takes a `c` of type `echo.Context` as a parameter.
 // It returns an `error` if any error occurs during the process.
 func sendEmail(c echo.Context) error {

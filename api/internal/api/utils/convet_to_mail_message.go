@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/email"
+	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/model/email"
 	"gopkg.in/gomail.v2"
 )
 

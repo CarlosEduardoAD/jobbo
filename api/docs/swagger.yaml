@@ -1,0 +1,56 @@
+swagger: "2.0"
+info:
+  contact: {}
+  title: "Documentação da API de Envio de Email"
+  description: "Esta API permite enviar emails."
+  version: "1.0"
+paths:
+  /email:
+    post:
+      summary: "Enviar um Email"
+      description: "Envie um email com os detalhes fornecidos no corpo da solicitação."
+      tags:
+        - "Email"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "email"
+          description: "Dados do email a ser enviado."
+          required: true
+          schema:
+            $ref: "#/definitions/Email"
+      responses:
+        "200":
+          description: "Email enviado com sucesso."
+          schema:
+            type: "string"
+            example: "email sent successfully!"
+        "400":
+          description: "Erro na solicitação."
+          schema:
+            type: "string"
+            example: "Erro na solicitação."
+definitions:
+  Email:
+    type: "object"
+    properties:
+      from:
+        type: "string"
+        example: "remetente@example.com"
+      to:
+        type: "string"
+        example: "destinatario@example.com"
+      subject:
+        type: "string"
+        example: "Assunto do Email"
+      body:
+        type: "string"
+        example: "Conteúdo do Email"
+    required:
+      - "from"
+      - "to"
+      - "subject"
+      - "body"
