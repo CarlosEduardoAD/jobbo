@@ -28,9 +28,9 @@ func TestMessageRepository_Create(t *testing.T) {
 		Subject:        "Test message",
 		Body:           "This is a test message",
 		SentAt:         time.Now(),
-		ServerID:       "server1",
+		ServerID:       "3c927464-b389-440f-8274-aeeeaaf6f8c7",
 		Server: server.Server{
-			ID:           "91c741f9-f08d-4dc8-9143-12ab6cf9dfae",
+			ID:           "3c927464-b389-440f-8274-aeeeaaf6f8c7",
 			Name:         "singelo servidor",
 			Address:      "servidor.smtp",
 			Port:         "379",

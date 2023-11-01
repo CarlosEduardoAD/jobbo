@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/model/server"
-	"github.com/google/uuid"
 )
 
 // Message is a struct that represents a message
@@ -23,10 +22,10 @@ type Message struct {
 	Server         server.Server `gorm:"foreignKey:ServerID"`
 }
 
-func NewMessage(userID string, orgId string, campaignId string, from string, to string, subject string, body string, sentAt time.Time, severId string, server server.Server) (*Message, error) {
+func NewMessage(id string, userID string, orgId string, campaignId string, from string, to string, subject string, body string, sentAt time.Time, severId string, server server.Server) (*Message, error) {
 
 	return &Message{
-		ID:             uuid.New().String(),
+		ID:             id,
 		UserID:         userID,
 		OrganizationId: orgId,
 		CampaignId:     campaignId,

@@ -10,6 +10,7 @@ import (
 )
 
 func TestNewMessage(t *testing.T) {
+	ID := uuid.New().String()
 	userID := uuid.New().String()
 	orgID := uuid.New().String()
 	campaignID := uuid.New().String()
@@ -24,7 +25,7 @@ func TestNewMessage(t *testing.T) {
 		Name: "Test server",
 	}
 
-	msg, err := message.NewMessage(userID, orgID, campaignID, from, to, subject, body, sentAt, serverId, server)
+	msg, err := message.NewMessage(ID, userID, orgID, campaignID, from, to, subject, body, sentAt, serverId, server)
 
 	if err != nil {
 		t.Errorf("NewMessage returned an error: %v", err)
@@ -77,6 +78,7 @@ func TestNewMessage(t *testing.T) {
 
 func TestMessage_Validate(t *testing.T) {
 	msg := message.Message{
+		ID:             uuid.New().String(),
 		UserID:         uuid.New().String(),
 		OrganizationId: uuid.New().String(),
 		CampaignId:     uuid.New().String(),

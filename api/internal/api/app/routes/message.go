@@ -10,6 +10,7 @@ import (
 	message_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/persistence/message"
 	server_repo "github.com/CarlosEduardoAD/jobbo-api/internal/api/infra/repo/persistence/server"
 	"github.com/CarlosEduardoAD/jobbo-api/internal/api/utils"
+	"github.com/google/uuid"
 
 	"github.com/labstack/echo/v4"
 )
@@ -72,7 +73,7 @@ func CreateMessage(c echo.Context) error {
 
 	log.Println(messageServer)
 
-	messageToBeSaved, err := message.NewMessage(serverPayload.UserID, serverPayload.OrganizationId, serverPayload.CampaignId, serverPayload.From, serverPayload.To, serverPayload.Subject, serverPayload.Body, serverPayload.SentAt, messageServer.ID, *messageServer)
+	messageToBeSaved, err := message.NewMessage(uuid.New().String(), serverPayload.UserID, serverPayload.OrganizationId, serverPayload.CampaignId, serverPayload.From, serverPayload.To, serverPayload.Subject, serverPayload.Body, serverPayload.SentAt, messageServer.ID, *messageServer)
 
 	if err != nil {
 		log.Print(err)
@@ -151,7 +152,7 @@ func updateMessage(c echo.Context) error {
 		return c.JSON(500, fmt.Sprintf("validtion failed: %s", err))
 	}
 
-	messageToBeSaved, err := message.NewMessage(serverPayload.UserID, serverPayload.OrganizationId, serverPayload.CampaignId, serverPayload.From, serverPayload.To, serverPayload.Subject, serverPayload.Body, serverPayload.SentAt, serverPayload.ServerID, serverPayload.Server)
+	messageToBeSaved, err := message.NewMessage(messageId, serverPayload.UserID, serverPayload.OrganizationId, serverPayload.CampaignId, serverPayload.From, serverPayload.To, serverPayload.Subject, serverPayload.Body, serverPayload.SentAt, serverPayload.ServerID, serverPayload.Server)
 
 	if err != nil {
 		return c.JSON(500, err)
