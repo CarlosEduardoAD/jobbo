@@ -2,6 +2,8 @@ package email
 
 import (
 	"errors"
+
+	"github.com/CarlosEduardoAD/jobbo-api/internal/api/domain/model/server"
 )
 
 // Email entity
@@ -10,10 +12,12 @@ import (
 //   - Subject : string
 //   - Body : string
 type Email struct {
-	From    string `json:"from" query:"from"`
-	To      string `json:"to" query:"to"`
-	Subject string `json:"subject" query:"subject"`
-	Body    string `json:"body" query:"body"`
+	From     string        `json:"from" query:"from"`
+	To       string        `json:"to" query:"to"`
+	Subject  string        `json:"subject" query:"subject"`
+	Body     string        `json:"body" query:"body"`
+	ServerID string        `json:"serverId" query:"serverId"` // Chave estrangeira
+	Server   server.Server `gorm:"foreignKey:ServerID"`
 }
 
 // NewEmail initializes a new Email struct with the given parameters.
@@ -25,12 +29,13 @@ type Email struct {
 //   - body: email body
 //
 // It returns a pointer to a new Email struct initialized with the given values.
-func NewEmail(from string, to string, subject string, body string) *Email {
+func NewEmail(from string, to string, subject string, body string, serverId string) *Email {
 	return &Email{
-		From:    from,
-		To:      to,
-		Subject: subject,
-		Body:    body}
+		From:     from,
+		To:       to,
+		Subject:  subject,
+		Body:     body,
+		ServerID: serverId}
 }
 
 // Validate validates the integrity of the Email receiver.
@@ -47,6 +52,10 @@ func (e *Email) Validate() error {
 	}
 	if e.Body == "" {
 		return errors.New("body is required")
+	}
+
+	if e.ServerID == "" {
+		return errors.New("serverId is required")
 	}
 
 	return nil
