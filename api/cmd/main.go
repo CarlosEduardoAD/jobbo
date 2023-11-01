@@ -81,7 +81,7 @@ func main() {
 			continue
 		}
 
-		emailToBeDelivered := utils.ConvertToMailMessage(email.NewEmail(emailInput.From, emailInput.To, emailInput.Subject, emailInput.Body))
+		emailToBeDelivered := utils.ConvertToMailMessage(email.NewEmail(emailInput.From, emailInput.To, emailInput.Subject, emailInput.Body, emailInput.ServerID))
 		emailRepo := email_repo.NewEmailService(dialer)
 		email_handler := email_handler.NewEmailHandler(emailRepo)
 

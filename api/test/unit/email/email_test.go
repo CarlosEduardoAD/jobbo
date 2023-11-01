@@ -28,7 +28,7 @@ func TestEmailCreationWithoutBody(t *testing.T) {
 }
 
 func TestEmailCreation(t *testing.T) {
-	email := email.NewEmail("test@example.com", "test2@example.com", "Test", "Email body")
+	email := email.NewEmail("test@example.com", "test2@example.com", "Test", "Email body", "5aa4b806-f8c4-4180-9034-e5e9ec4d7dc3")
 	assert.Equal(t, nil, email.Validate())
 }
 
